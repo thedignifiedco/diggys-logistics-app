@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./logistics-api
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_URL=mongodb+srv://damolasorinolu:MihAY9X9U3zMiYIJ@dignifiedlabs.wbhkx33.mongodb.net
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./logistics-web
+    ports:
+      - "3001:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://app:3000
+    depends_on:
+      - app
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
