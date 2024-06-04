@@ -6,27 +6,27 @@ This a simple project is a supply chain tracking system, consisting of a backend
 
 - [Tech Stack](#tech-stack)
 - [Setup Instructions](#setup-instructions)
-  - [Backend Setup](#backend-setup)
+  - [API Setup](#backend-setup)
   - [Frontend Setup](#frontend-setup)
 - [Deployment Instructions](#deployment-instructions)
-  - [Deploying Backend](#deploying-backend)
+  - [Deploying API](#deploying-backend)
   - [Deploying Frontend](#deploying-frontend)
 
 ## Tech Stack
 
-- **Backend**: Node.js, Express, TypeScript, MongoDB, Mongoose
+- **API**: Node.js, Express, TypeScript, MongoDB, Mongoose
 - **Frontend**: Next.js, React, Bootstrap
 - **Deployment**: Vercel for the frontend, Docker for containerization
 
 ## Setup Instructions
 
-### Backend Setup
+### API Setup
 
 1. **Clone the repository:**
 
     ```bash
     git clone <repository-url>
-    cd <repository-directory>/backend
+    cd <repository-directory>/logistics-api
     ```
 
 2. **Install dependencies:**
@@ -35,27 +35,27 @@ This a simple project is a supply chain tracking system, consisting of a backend
     npm install
     ```
 
-3. **Create a `.env` file in the `backend` directory and add the following environment variables:**
+3. **Create a `.env` file in the `logistics-api` directory and add the following environment variables:**
 
     ```env
     PORT=3000
-    DB_URL=mongodb://localhost:27017/supply-chain
+    DB_URL=mongodb://localhost:27017/logistics-api
     ```
 
-4. **Run the backend server:**
+4. **Run the API server:**
 
     ```bash
     npm run dev
     ```
 
-    The backend server should now be running at `http://localhost:3001`.
+    The API server should now be running at `http://localhost:3000`.
 
 ### Frontend Setup
 
-1. **Navigate to the `frontend` directory:**
+1. **Navigate to the `logistics-web` directory:**
 
     ```bash
-    cd ../frontend
+    cd ../logistics-web
     ```
 
 2. **Install dependencies:**
@@ -64,7 +64,7 @@ This a simple project is a supply chain tracking system, consisting of a backend
     npm install
     ```
 
-3. **Create a `.env.local` file in the `frontend` directory and add the following environment variable:**
+3. **Create a `.env.local` file in the `logistics-web` directory and add the following environment variable:**
 
     ```env
     NEXT_PUBLIC_API_URL=http://localhost:3000
@@ -76,7 +76,7 @@ This a simple project is a supply chain tracking system, consisting of a backend
     npm run dev
     ```
 
-    The frontend application should now be running at `http://localhost:3000`.
+    The frontend application should now be running at `http://localhost:3001`.
 
 ## Deployment Instructions
 
@@ -88,7 +88,7 @@ You can deploy the backend to any cloud service provider or use Docker for conta
 
     ```bash
     docker build -t logistics-api .
-    docker run -p 3001:3000 logistics-api
+    docker run -p 3000:3000 logistics-api
     ```
 
     Ensure your MongoDB instance is accessible from the deployed backend.

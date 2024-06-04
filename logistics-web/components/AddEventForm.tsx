@@ -14,7 +14,7 @@ const AddEventForm: React.FC<AddEventFormProps> = ({ onResponse }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:3001/api/orders/${orderId}/events`, {
+            const response = await axios.post(`http://localhost:3000/api/orders/${orderId}/events`, {
                 location,
                 custodian,
                 timestamp

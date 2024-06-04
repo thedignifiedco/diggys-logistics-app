@@ -15,7 +15,7 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ onResponse }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3001/api/orders', {
+            const response = await axios.post('http://localhost:3000/api/orders', {
                 product,
                 quantity: parseInt(quantity),
                 source,
