@@ -1,6 +1,6 @@
 # Supply Chain Tracking System
 
-This a simple project is a supply chain tracking system, consisting of a backend API built with TypeScript and Express, and a frontend web app built with Next.js. The system allows users to track and trace supply chain items by creating, updating, and querying orders and their associated events.
+This repository is a supply chain tracking system, consisting of a backend API built with TypeScript and Express, and a frontend web app built with Next.js. The system allows users to track and trace supply chain items by creating, updating, and querying orders and their associated events.
 
 ## Table of Contents
 
