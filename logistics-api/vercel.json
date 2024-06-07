@@ -1,28 +1,19 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "api/**/*.ts",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/api/orders",
-        "dest": "/api/orders/index.ts"
-      },
-      {
-        "src": "/api/orders/(.*)",
-        "dest": "/api/orders/[id].ts"
-      },
-      {
-        "src": "/api/events",
-        "dest": "/api/events/index.ts"
-      },
-      {
-        "src": "/api/events/(.*)",
-        "dest": "/api/events/[id].ts"
-      }
-    ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    }
+  ],
+  "env": {
+    "DB_URL": "@db_url",
+    "PORT": "3000"
   }
-  
+}
