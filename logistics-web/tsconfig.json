@@ -51,12 +51,5 @@
     "node_modules", // Exclude node_modules directory
     ".next", // Exclude .next directory
     "build" // Exclude build directory
-  ],
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "tsconfig.jest.json" // Use separate tsconfig for Jest
-      }
-    }
-  }
+  ]
 }
