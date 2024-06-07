@@ -1,26 +1,45 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": ["./*"]
-    }
+    "target": "ES2020",                        // Specify ECMAScript target version
+    "lib": ["dom", "dom.iterable", "esnext"],  // Specify library files to be included
+    "allowJs": true,                           // Allow JavaScript files to be compiled
+    "skipLibCheck": true,                      // Skip type checking of declaration files
+    "strict": true,                            // Enable all strict type-checking options
+    "forceConsistentCasingInFileNames": true,  // Ensure consistent casing in file names
+    "noEmit": true,                            // Do not emit outputs
+    "esModuleInterop": true,                   // Enable import/export interop
+    "module": "commonjs",                      // Specify module code generation
+    "moduleResolution": "node",                // Specify module resolution strategy
+    "resolveJsonModule": true,                 // Include modules imported with .json extension
+    "isolatedModules": true,                   // Ensure modules are isolated
+    "jsx": "preserve",                         // Preserve JSX
+    "incremental": true,                       // Enable incremental compilation
+    "baseUrl": ".",                            // Base directory for non-relative module names
+    "paths": {                                 // Paths aliasing
+      "@/components/*": ["components/*"],
+      "@/pages/*": ["pages/*"],
+      "@/styles/*": ["styles/*"]
+    },
+    "typeRoots": [                             // Specify type declaration file directories
+      "./node_modules/@types",
+      "./typings"
+    ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",         // Include Next.js environment definitions
+    "**/*.ts",               // Include all TypeScript files
+    "**/*.tsx"               // Include all TSX files
+  ],
+  "exclude": [
+    "node_modules",          // Exclude node_modules directory
+    ".next",                 // Exclude .next directory
+    "build"                  // Exclude build directory
+  ],
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "tsconfig": "tsconfig.jest.json"  // Use separate tsconfig for Jest
+      }
+    }
+  }
 }
