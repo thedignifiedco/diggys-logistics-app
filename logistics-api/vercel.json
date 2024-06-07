@@ -6,14 +6,10 @@
       "use": "@vercel/node"
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/index.ts"
+      "src": "/api/(.*)",
+      "dest": "/api/index.ts"
     }
-  ],
-  "env": {
-    "DB_URL": "mongodb+srv://damolasorinolu:MihAY9X9U3zMiYIJ@dignifiedlabs.wbhkx33.mongodb.net",
-    "PORT": "3000"
-  }
+  ]
 }
