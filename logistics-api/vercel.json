@@ -8,8 +8,23 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "src": "/api/orders",
+      "dest": "/api/orders/index.ts"
+    },
+    {
+      "src": "/api/orders/(.*)",
+      "dest": "/api/orders/[id].ts"
+    },
+    {
+      "src": "/api/events",
+      "dest": "/api/events/index.ts"
+    },
+    {
+      "src": "/api/events/(.*)",
+      "dest": "/api/events/[id].ts"
     }
-  ]
+  ],
+  "env": {
+    "PORT": "3000"
+  }
 }
