@@ -1,39 +1,18 @@
 import { useState } from 'react';
-import axios from 'axios';
 import OrderEvents from '../components/OrderEvents';
 import CreateOrderForm from '../components/CreateOrderForm';
 import UpdateOrderForm from '../components/UpdateOrderForm';
 import AddEventForm from '../components/AddEventForm';
-import { Event } from '../types';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 const IndexPage = () => {
     const [orderId, setOrderId] = useState('');
-    const [events, setEvents] = useState<Event[]>([]);
-    const [orderStatus, setOrderStatus] = useState<string | null>(null);
-    const [lastEvent, setLastEvent] = useState<Event | null>(null);
     const [createOrderResponse, setCreateOrderResponse] = useState('');
     const [createdOrder, setCreatedOrder] = useState<any | null>(null);
     const [updateOrderResponse, setUpdateOrderResponse] = useState('');
     const [addEventResponse, setAddEventResponse] = useState('');
-
-    const fetchEvents = async () => {
-        try {
-            const response = await axios.get(`${API_URL}/api/orders/${orderId}/events`);
-            const { order, events }: { order: any; events: Event[] } = response.data;
-            setEvents(events);
-            setOrderStatus(order.status);
-            if (events.length > 0) {
-                setLastEvent(events[events.length - 1]);
-            } else {
-                setLastEvent(null);
-            }
-        } catch (error) {
-            console.error('Error fetching events:', error);
-        }
-    };
 
     const handleCreateOrderResponse = (response: string, data?: any) => {
         setCreateOrderResponse(response);
@@ -44,7 +23,7 @@ const IndexPage = () => {
         <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="main col-md-8">
-                    <h1 className="text-center mb-4">Diggys Logistics</h1>
+                    <h1 id="hero-banner" className="text-center mb-4">Diggys Logistics</h1>
                     <div className="accordion mt-4" id="accordionExample">
                         <div className="accordion-item">
                             <h2 className="accordion-header" id="headingOne">
@@ -57,7 +36,7 @@ const IndexPage = () => {
                                     <CreateOrderForm onResponse={handleCreateOrderResponse} />
                                     {createOrderResponse && (
                                         <div className="alert alert-info mt-3">
-                                            <h2>Order Details</h2>
+                                            <h3>Order Details</h3>
                                             {createdOrder ? (
                                                 <div>
                                                     <p><strong>Order ID:</strong> {createdOrder._id}</p>
@@ -93,7 +72,7 @@ const IndexPage = () => {
                         <div className="accordion-item">
                             <h2 className="accordion-header" id="headingThree">
                                 <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    Add Event
+                                    Add Order Event
                                 </button>
                             </h2>
                             <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
@@ -121,24 +100,7 @@ const IndexPage = () => {
                                             onChange={(e) => setOrderId(e.target.value)}
                                             placeholder="Enter Order ID"
                                         />
-                                        <button onClick={fetchEvents} className="btn btn-primary mt-2">Get Events</button>
-                                    </div>
-                                    <div className="alert alert-info mt-3">
-                                        {orderStatus && (
-                                            <div className="mb-3">
-                                                <h3>Latest Event</h3>
-                                                <p><strong>Status:</strong> {orderStatus}</p>
-                                            </div>
-                                        )}
-                                        {lastEvent && (
-                                            <div className="mb-3">
-                                                <p><strong>Location:</strong> {lastEvent.location}</p>
-                                                <p><strong>Custodian:</strong> {lastEvent.custodian}</p>
-                                                <p><strong>Timestamp:</strong> {new Date(lastEvent.timestamp).toLocaleString()}</p>
-                                            </div>
-                                        )}
-                                        <h4>All Order Events</h4>
-                                        <OrderEvents events={events} />
+                                        <OrderEvents orderId={orderId} />
                                     </div>
                                 </div>
                             </div>

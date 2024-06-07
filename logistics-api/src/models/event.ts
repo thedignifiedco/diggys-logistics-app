@@ -1,17 +1,19 @@
-import { Schema, model, Document } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
-interface EventDocument extends Document {
-    orderId: Schema.Types.ObjectId;
+export interface EventDocument extends Document {
+    orderId: mongoose.Types.ObjectId;
     location: string;
     custodian: string;
     timestamp: Date;
 }
 
-const eventSchema = new Schema<EventDocument>({
-    orderId: { type: Schema.Types.ObjectId, ref: 'Order', required: true },
+const eventSchema = new Schema({
+    orderId: { type: mongoose.Types.ObjectId, required: true, ref: 'Order' },
     location: { type: String, required: true },
     custodian: { type: String, required: true },
-    timestamp: { type: Date, required: true, default: Date.now },
+    timestamp: { type: Date, required: true }
 });
 
-export default model<EventDocument>('Event', eventSchema);
+const Event = mongoose.model<EventDocument>('Event', eventSchema);
+
+export default Event;

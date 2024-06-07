@@ -1,20 +1,8 @@
-import { Schema } from 'express-validator';
+import { body } from 'express-validator';
 
-export const eventSchema: Schema = {
-    location: {
-        in: ['body'],
-        isString: true,
-        errorMessage: 'Location is required and should be a string',
-    },
-    custodian: {
-        in: ['body'],
-        isString: true,
-        errorMessage: 'Custodian is required and should be a string',
-    },
-    timestamp: {
-        in: ['body'],
-        isISO8601: true,
-        toDate: true,
-        errorMessage: 'Timestamp is required and should be a valid date',
-    },
-};
+export const eventSchema = [
+  body('orderId').isMongoId().withMessage('Order ID is required and must be a valid MongoDB ID'),
+  body('location').isString().withMessage('Location is required'),
+  body('custodian').isString().withMessage('Custodian is required'),
+  body('timestamp').isISO8601().toDate().withMessage('Timestamp is required and must be a valid date')
+];

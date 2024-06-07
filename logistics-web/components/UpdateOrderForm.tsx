@@ -24,7 +24,7 @@ const UpdateOrderForm: React.FC<UpdateOrderFormProps> = ({ onResponse }) => {
                 destination,
                 status
             });
-            const response = await axios.put(`http://localhost:3000/api/orders/${orderId}`, data);
+            const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderId}`, data);
             onResponse('Order updated successfully');
             setOrderId('');
             setProduct('');

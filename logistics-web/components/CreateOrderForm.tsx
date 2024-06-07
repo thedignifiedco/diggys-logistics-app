@@ -15,7 +15,7 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ onResponse }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/api/orders', {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
                 product,
                 quantity: parseInt(quantity),
                 source,
@@ -35,7 +35,7 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ onResponse }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="mb-3">
+        <form onSubmit={handleSubmit} className="mb-3" noValidate>
             <h3>Create a New Order</h3>
             <div className="mb-3">
                 <label className="form-label">Product</label>

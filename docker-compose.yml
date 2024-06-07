@@ -1,7 +1,5 @@
-version: '3.8'
-
 services:
-  app:
+  api:
     build: ./logistics-api
     ports:
       - "3000:3000"
@@ -11,14 +9,14 @@ services:
     depends_on:
       - mongo
 
-  frontend:
+  web:
     build: ./logistics-web
     ports:
       - "3001:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://app:3000
+      - NEXT_PUBLIC_API_URL=http://api:3000
     depends_on:
-      - app
+      - api
 
   mongo:
     image: mongo:latest

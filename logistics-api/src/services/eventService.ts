@@ -1,21 +1,15 @@
-import Event from '../models/event';
-import Order from '../models/order';
+import Event, { EventDocument } from '../models/event';
 
-export const addEvent = async (orderId: string, data: any) => {
-    const order = await Order.findById(orderId);
-    if (!order) {
-        throw new Error('Order not found');
-    }
-
-    const event = new Event({ ...data, orderId });
+export const createEvent = async (data: any): Promise<EventDocument> => {
+    const event = new Event(data);
     await event.save();
     return event;
 };
 
-export const getEvents = async (orderId: string, lastOnly: boolean = false) => {
-    const events = await Event.find({ orderId }).sort({ timestamp: lastOnly ? -1 : 1 });
-    if (!events || events.length === 0) {
-        throw new Error('No events found for the specified order');
-    }
-    return lastOnly ? events[0] : events;
+export const getEventsByOrderId = async (orderId: string): Promise<EventDocument[]> => {
+    return await Event.find({ orderId }).sort({ timestamp: 1 });
+};
+
+export const getLastEventByOrderId = async (orderId: string): Promise<EventDocument | null> => {
+    return await Event.findOne({ orderId }).sort({ timestamp: -1 });
 };

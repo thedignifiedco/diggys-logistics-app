@@ -1,31 +1,41 @@
 import { Request, Response } from 'express';
-import { addEvent, getEvents } from '../services/eventService';
+import { createEvent, getEventsByOrderId, getLastEventByOrderId } from '../services/eventService';
+import dbConnect from '../utils/dbConnect';
 
-export const createNewEvent = async (req: Request, res: Response) => {
+// Connect to the database before performing any operations
+dbConnect();
+
+// Function to create a new event
+export const createEventHandler = async (req: Request, res: Response) => {
     try {
-        const { orderId } = req.params;
-        const event = await addEvent(orderId, req.body);
+        const event = await createEvent(req.body);
         res.status(201).json(event);
     } catch (error) {
-        if (error instanceof Error) {
-            res.status(400).json({ error: error.message });
-        } else {
-            res.status(400).json({ error: 'An unknown error occurred' });
-        }
+        console.error('Error creating event:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 
-export const getOrderEvents = async (req: Request, res: Response) => {
+// Function to get all events for a specific order
+export const getEventsByOrderIdHandler = async (req: Request, res: Response) => {
+    const { id } = req.params;
     try {
-        const { orderId } = req.params;
-        const { last } = req.query;
-        const events = await getEvents(orderId, last === 'true');
+        const events = await getEventsByOrderId(id);
         res.status(200).json(events);
     } catch (error) {
-        if (error instanceof Error) {
-            res.status(400).json({ error: error.message });
-        } else {
-            res.status(400).json({ error: 'An unknown error occurred' });
-        }
+        console.error('Error fetching events:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+// Function to get the last event for a specific order
+export const getLastEventByOrderIdHandler = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const event = await getLastEventByOrderId(id);
+        res.status(200).json(event);
+    } catch (error) {
+        console.error('Error fetching the last event:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 };
