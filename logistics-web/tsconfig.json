@@ -45,7 +45,8 @@
     "**/*.ts", // Include all TypeScript files
     "**/*.tsx" // Include all TSX files
     ,
-    "build/types/**/*.ts"
+    "build/types/**/*.ts",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules", // Exclude node_modules directory

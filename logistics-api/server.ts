@@ -1,18 +1,27 @@
-import mongoose from 'mongoose';
-import app from './src/app';
+import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
+import orderRoutes from './src/routes/orderRoutes';
+import eventRoutes from './src/routes/eventRoutes';
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
-const DB_URL = process.env.DB_URL || 'mongodb+srv://damolasorinolu:MihAY9X9U3zMiYIJ@dignifiedlabs.wbhkx33.mongodb.net';
+const app = express();
+const port = process.env.PORT || 3000;
 
-mongoose.connect(DB_URL, {
-}).then(() => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
-    });
-}).catch((err) => {
-    console.error('Database connection error:', err);
+app.use(cors());
+app.use(express.json());
+
+app.use('/api', orderRoutes);
+app.use('/api', eventRoutes);
+
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+export default app;
