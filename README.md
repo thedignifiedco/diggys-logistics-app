@@ -105,7 +105,7 @@ You can deploy the backend & frontend to any cloud service provider or use Docke
 
     Ensure your MongoDB instance is accessible from the deployed backend.
 
-### Deploying Frontend to Vercel
+### Deploying Frontend
 
 1. **Install Vercel CLI:**
 
