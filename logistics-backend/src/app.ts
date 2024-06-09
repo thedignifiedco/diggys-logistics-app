@@ -10,8 +10,11 @@ dotenv.config();
 
 const app = express();
 
+// Determine CORS origin based on the environment
+const corsOrigin = process.env.NODE_ENV === 'production' ? process.env.PROD_CORS_ORIGIN : process.env.DEV_CORS_ORIGIN;
+
 app.use(cors({
-  origin: 'http://localhost:3000' || 'https://logistics.dignifiedlabs.com',
+  origin: corsOrigin,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true
 }));
