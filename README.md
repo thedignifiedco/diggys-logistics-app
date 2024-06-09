@@ -26,7 +26,7 @@ This repository is a supply chain tracking system, consisting of a backend API b
 
     ```bash
     git clone <repository-url>
-    cd <repository-directory>/logistics-api
+    cd <repository-directory>/logistics-backend
     ```
 
 2. **Install dependencies:**
@@ -38,7 +38,7 @@ This repository is a supply chain tracking system, consisting of a backend API b
 3. **Create a `.env` file in the `logistics-api` directory and add the following environment variables:**
 
     ```env
-    PORT=3000
+    PORT=8080
     DB_URL=mongodb://localhost:27017/logistics-api
     ```
 
@@ -48,11 +48,11 @@ This repository is a supply chain tracking system, consisting of a backend API b
     npm run dev
     ```
 
-    The API server should now be running at `http://localhost:3000`.
+    The API server should now be running at `http://localhost:8080`.
 
 ### Frontend Setup
 
-1. **Navigate to the `logistics-web` directory:**
+1. **Navigate to the `logistics-frontend` directory:**
 
     ```bash
     cd ../logistics-web
@@ -64,7 +64,7 @@ This repository is a supply chain tracking system, consisting of a backend API b
     npm install
     ```
 
-3. **Create a `.env.local` file in the `logistics-web` directory and add the following environment variable:**
+3. **Create a `.env.local` file in the `logistics-frontend` directory and add the following environment variable:**
 
     ```env
     NEXT_PUBLIC_API_URL=http://localhost:3000
@@ -76,24 +76,36 @@ This repository is a supply chain tracking system, consisting of a backend API b
     npm run dev
     ```
 
-    The frontend application should now be running at `http://localhost:3001`.
+    The frontend application should now be running at `http://localhost:3000`.
 
 ## Deployment Instructions
 
 ### Deploying Backend
 
-You can deploy the backend to any cloud service provider or use Docker for containerization.
+You can deploy the backend & frontend to any cloud service provider or use Docker for containerization.
 
-1. **Build and run the Docker container:**
+1. **Navigate to the root directory:**
 
     ```bash
-    docker build -t logistics-api .
-    docker run -p 3000:3000 logistics-api
+    cd ..
+    ```
+
+2. **Build and run the Docker container for both frontend and backend:**
+
+    ```bash
+    docker-compose up --build
+    ```
+
+3. **To Build and run the Docker container for the backend alone:**
+
+    ```bash
+    docker build -t logistics-backend .
+    docker run -p 8080:8080 logistics-backend
     ```
 
     Ensure your MongoDB instance is accessible from the deployed backend.
 
-### Deploying Frontend
+### Deploying Frontend to Vercel
 
 1. **Install Vercel CLI:**
 
@@ -107,35 +119,15 @@ You can deploy the backend to any cloud service provider or use Docker for conta
     vercel login
     ```
 
-3. **Create a `vercel.json` file in the `frontend` directory:**
-
-    ```json
-    {
-      "version": 2,
-      "builds": [
-        {
-          "src": "package.json",
-          "use": "@vercel/next"
-        }
-      ],
-      "routes": [
-        {
-          "src": "/(.*)",
-          "dest": "/"
-        }
-      ]
-    }
-    ```
-
-4. **Deploy the frontend:**
+3. **Deploy the frontend:**
 
     ```bash
     cd frontend
     vercel
     ```
 
-5. **Set Environment Variables on Vercel:**
+4. **Set Environment Variables on Vercel:**
 
     Go to your project’s dashboard on Vercel, navigate to the "Settings" tab, and add your environment variables, such as `NEXT_PUBLIC_API_URL`.
 
-By following these instructions, you should be able to set up and deploy your Supply Chain Tracking System successfully. If you encounter any issues, please refer to the official documentation for the respective technologies or raise an issue in the project repository.
+By following these instructions, you should be able to set up and deploy your Supply Chain Tracking System successfully.
