@@ -1,22 +1,22 @@
 services:
-  api:
-    build: ./logistics-api
+  backend:
+    build: ./logistics-backend
     ports:
-      - "3000:3000"
+      - "8080:8080"
     environment:
-      - PORT=3000
-      - DB_URL=mongodb+srv://damolasorinolu:MihAY9X9U3zMiYIJ@dignifiedlabs.wbhkx33.mongodb.net
+      - PORT=8080
+      - DB_URL=mongodb+srv://damolasorinolu:wXU2SM0jHmrpXOpE@dignifiedlabs.wbhkx33.mongodb.net
     depends_on:
       - mongo
 
-  web:
-    build: ./logistics-web
+  frontend:
+    build: ./logistics-frontend
     ports:
-      - "3001:3000"
+      - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://api:3000
+      - NEXT_PUBLIC_API_URL=http:/localhost/api:5000
     depends_on:
-      - api
+      - backend
 
   mongo:
     image: mongo:latest
