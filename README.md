@@ -55,7 +55,7 @@ This repository is a supply chain tracking system, consisting of a backend API b
 1. **Navigate to the `logistics-frontend` directory:**
 
     ```bash
-    cd ../logistics-web
+    cd ../logistics-frontend
     ```
 
 2. **Install dependencies:**
