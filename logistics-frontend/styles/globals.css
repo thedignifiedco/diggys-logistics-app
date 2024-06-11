@@ -23,6 +23,13 @@ a.nav-link {
     margin-bottom: 5rem!important;
 }
 
+@media (max-width: 700px) {
+    .content {
+        margin-top: 3rem!important;
+        margin-bottom: 3rem!important;
+    }
+}
+
 #hero-banner {
     display: block;
     width: 100%;
@@ -80,4 +87,5 @@ footer {
 .alert.show {
     max-height: 400px;
     overflow-y: scroll;
+    margin-bottom: 120px;
 }
