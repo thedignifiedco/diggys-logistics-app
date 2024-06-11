@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
 import AccordionForm from '../components/AccordionForm';
 import { Container, Row, Col } from 'react-bootstrap';
 
@@ -17,16 +18,13 @@ const Dashboard = () => {
   return (
     <div>
       <NavBar />
-      <Container>
-        <Row className="mt-5">
-          <Col>
+      <Container className='content'>
             <Container>
                 <h2>Orders Dashboard</h2>
             </Container>
             <AccordionForm />
-          </Col>
-        </Row>
       </Container>
+      <Footer />
     </div>
   );
 };

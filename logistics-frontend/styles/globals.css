@@ -5,7 +5,6 @@ body {
     background-size: cover;
     background-blend-mode: overlay;
     background-attachment: fixed;
-    height: 100vh;
 }
 
 a.nav-link {
@@ -17,6 +16,11 @@ a.nav-link {
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+}
+
+.content {
+    margin-top: 5rem!important;
+    margin-bottom: 5rem!important;
 }
 
 #hero-banner {
@@ -67,7 +71,7 @@ form button,
 }
 
 footer {
-    position: absolute;
+    position: fixed;
     width: 100%;
     bottom: 0;
     background-color: #fff;
