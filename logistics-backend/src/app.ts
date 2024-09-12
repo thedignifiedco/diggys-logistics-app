@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import orderRoutes from './routes/orderRoutes';
+import consignmentRoutes from './routes/consignmentRoutes';
 
 dotenv.config();
 
@@ -40,7 +40,7 @@ const options = {
 const specs = swaggerJsdoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-app.use('/api', orderRoutes);
+app.use('/api', consignmentRoutes);
 
 const PORT = process.env.PORT || 8080;
 

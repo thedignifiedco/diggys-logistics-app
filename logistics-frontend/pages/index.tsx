@@ -1,6 +1,6 @@
 import NavBar from '../components/NavBar';
 import HeroBanner from '../components/HeroBanner';
-import OrderForm from '../components/OrderForm';
+import ConsingmentForm from '../components/ConsignmentForm';
 import Footer from '../components/Footer';
 
 const Home = () => {
@@ -11,7 +11,7 @@ const Home = () => {
             <div className="row justify-content-center">
                 <div className="main col-md-8">
                     <HeroBanner />
-                    <OrderForm />
+                    <ConsingmentForm />
                 </div>
             </div>
         </div>

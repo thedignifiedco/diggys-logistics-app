@@ -4,15 +4,15 @@ import axios from 'axios';
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
-const OrderForm = () => {
+const ConsignmentForm = () => {
   const [id, setId] = useState('');
   const [response, setResponse] = useState('');
   const [error, setError] = useState('');
 
-  const formatRecentEventResponse = (orderId: string, orderStatus: string, event: any) => {
+  const formatRecentEventResponse = (consignmentId: string, consignmentStatus: string, event: any) => {
     return `
-      <p><strong>Order ID:</strong> ${orderId}</br>
-      <strong>Status:</strong> ${orderStatus}</br>
+      <p><strong>consignment ID:</strong> ${consignmentId}</br>
+      <strong>Status:</strong> ${consignmentStatus}</br>
       <strong>Most Recent Update:</strong></p>
       <div class="event-details"><strong>Timestamp:</strong> ${event.timestamp}</br>
       <strong>Location:</strong> ${event.location}</br>
@@ -23,11 +23,11 @@ const OrderForm = () => {
 
   const handleGetRecentEvent = async () => {
     try {
-      const orderRes = await axios.get(`${baseURL}/orders/${id}`);
-      const orderStatus = orderRes.data.status;
-      const eventRes = await axios.get(`${baseURL}/orders/${id}/events/recent`);
+      const consignmentRes = await axios.get(`${baseURL}/consignments/${id}`);
+      const consignmentStatus = consignmentRes.data.status;
+      const eventRes = await axios.get(`${baseURL}/consignments/${id}/events/recent`);
       const event = eventRes.data;
-      const formattedResponse = formatRecentEventResponse(id, orderStatus, event);
+      const formattedResponse = formatRecentEventResponse(id, consignmentStatus, event);
       setResponse(formattedResponse);
       setError('');
     } catch (err) {
@@ -40,10 +40,10 @@ const OrderForm = () => {
     <Container>
       <Form>
         <Form.Group controlId="id">
-          <Form.Label>Order ID</Form.Label>
+          <Form.Label>consignment ID</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter order ID"
+            placeholder="Enter consignment ID"
             value={id}
             onChange={(e) => setId(e.target.value)}
           />
@@ -66,4 +66,4 @@ const OrderForm = () => {
   );
 };
 
-export default OrderForm;
+export default ConsignmentForm;

@@ -20,7 +20,7 @@ const Dashboard = () => {
       <NavBar />
       <Container className='content'>
             <Container>
-                <h2>Orders Dashboard</h2>
+                <h2>Consignments Dashboard</h2>
             </Container>
             <AccordionForm />
       </Container>

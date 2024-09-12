@@ -1,7 +1,7 @@
-export const orderSchema = {
+export const consignmentSchema = {
   type: 'object',
   properties: {
-    orderId: { type: 'string' },
+    consignmentId: { type: 'string' },
     product: { type: 'string' },
     quantity: { type: 'number' },
     source: { type: 'string' },
@@ -21,5 +21,5 @@ export const orderSchema = {
       }
     }
   },
-  required: ['orderId', 'product', 'quantity', 'source', 'destination', 'status']
+  required: ['consignmentId', 'product', 'quantity', 'source', 'destination', 'status']
 };

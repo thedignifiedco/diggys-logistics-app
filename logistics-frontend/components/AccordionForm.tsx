@@ -8,7 +8,7 @@ const AccordionForm = () => {
   const [response, setResponse] = useState('');
   const [error, setError] = useState('');
   const [id, setId] = useState('');
-  const [orderData, setOrderData] = useState({ product: '', quantity: '', source: '', destination: '', status: 'Processing' });
+  const [consignmentData, setConsignmentData] = useState({ product: '', quantity: '', source: '', destination: '', status: 'Processing' });
   const [eventData, setEventData] = useState({ description: '', location: '', custodian: '' });
 
   const handleResponse = (message: string, data: any, error: string) => {
@@ -26,7 +26,7 @@ const AccordionForm = () => {
     if (!data) return '';
 
     let result = `<p><em>${message}</em></p>`;
-    result += `<div><strong>Order ID:</strong> ${data._id}</br>`;
+    result += `<div><strong>Consignment ID:</strong> ${data._id}</br>`;
     result += `<strong>Status:</strong> ${data.status}</br>`;
     result += `<strong>Product:</strong> ${data.product}</br>`;
     result += `<strong>Source:</strong> ${data.source}</br>`;
@@ -34,7 +34,7 @@ const AccordionForm = () => {
     result += `<strong>Quantity:</strong> ${data.quantity}</div>`;
 
     if (data.events) {
-      result += '<strong>Order Events:</strong></br>';
+      result += '<strong>Consignment Events:</strong></br>';
       data.events.forEach((event: any) => {
         result += `<div class="event-details"><strong>Timestamp:</strong> ${event.timestamp}</br>`;
         result += `<strong>Location:</strong> ${event.location}</br>`;
@@ -46,51 +46,51 @@ const AccordionForm = () => {
     return result;
   };
 
-  const handleGetAllOrders = async () => {
+  const handleGetAllConsignments = async () => {
     try {
-      const res = await axios.get(`${baseURL}/orders`);
-      const formattedResponse = res.data.map((order: any) => `<p><strong>Order ID:</strong> ${order._id}<br/><strong>Status:</strong> ${order.status}</p>`).join('<br/>');
+      const res = await axios.get(`${baseURL}/consignments`);
+      const formattedResponse = res.data.map((consignment: any) => `<p><strong>Consignment ID:</strong> ${consignment._id}<br/><strong>Status:</strong> ${consignment.status}</p>`).join('<br/>');
       setResponse(formattedResponse);
       setError('');
     } catch (err) {
-      setError('Failed to fetch all orders');
+      setError('Failed to fetch all consignments');
       setResponse('');
     }
   };
 
-  const handleCreateOrder = async () => {
+  const handleCreateConsignment = async () => {
     try {
-      const res = await axios.post(`${baseURL}/orders`, orderData);
-      handleResponse('Order created successfully', res.data, '');
+      const res = await axios.post(`${baseURL}/consignments`, consignmentData);
+      handleResponse('Consignment created successfully', res.data, '');
     } catch (err) {
-      handleResponse('', null, 'Failed to create order');
+      handleResponse('', null, 'Failed to create consignment');
     }
   };
 
-  const handleUpdateOrder = async () => {
+  const handleUpdateConsignment = async () => {
     try {
       // Filter out empty fields
-      const filteredData = Object.fromEntries(Object.entries(orderData).filter(([key, value]) => value !== ''));
+      const filteredData = Object.fromEntries(Object.entries(consignmentData).filter(([key, value]) => value !== ''));
 
-      const res = await axios.put(`${baseURL}/orders/${id}`, filteredData);
-      handleResponse('Order updated successfully', res.data, '');
+      const res = await axios.put(`${baseURL}/consignments/${id}`, filteredData);
+      handleResponse('Consignment updated successfully', res.data, '');
     } catch (err) {
-      handleResponse('', null, 'Failed to update order');
+      handleResponse('', null, 'Failed to update consignment');
     }
   };
 
-  const handleDeleteOrder = async () => {
+  const handleDeleteConsignment = async () => {
     try {
-      const res = await axios.delete(`${baseURL}/orders/${id}`);
-      handleResponse('Order deleted successfully', { _id: id }, '');
+      const res = await axios.delete(`${baseURL}/consignments/${id}`);
+      handleResponse('Consignment deleted successfully', { _id: id }, '');
     } catch (err) {
-      handleResponse('', null, 'Failed to delete order');
+      handleResponse('', null, 'Failed to delete consignment');
     }
   };
 
   const handleAddEvent = async () => {
     try {
-      const res = await axios.post(`${baseURL}/orders/${id}/events`, eventData);
+      const res = await axios.post(`${baseURL}/consignments/${id}/events`, eventData);
       handleResponse('Event added successfully', res.data, '');
     } catch (err) {
       handleResponse('', null, 'Failed to add event');
@@ -99,9 +99,9 @@ const AccordionForm = () => {
 
   const handleGetAllEvents = async () => {
     try {
-      const orderRes = await axios.get(`${baseURL}/orders/${id}`);
-      const eventsRes = await axios.get(`${baseURL}/orders/${id}/events`);
-      handleResponse('Order events retrieved successfully', { ...orderRes.data, events: eventsRes.data }, '');
+      const consignmentRes = await axios.get(`${baseURL}/consignments/${id}`);
+      const eventsRes = await axios.get(`${baseURL}/consignments/${id}/events`);
+      handleResponse('Consignment events retrieved successfully', { ...consignmentRes.data, events: eventsRes.data }, '');
     } catch (err) {
       handleResponse('', null, 'Failed to fetch all events');
     }
@@ -111,35 +111,35 @@ const AccordionForm = () => {
     <Container>
       <Accordion defaultActiveKey="0">
         <Accordion.Item eventKey="0">
-          <Accordion.Header>Get All Orders</Accordion.Header>
+          <Accordion.Header>Get All Consignments</Accordion.Header>
           <Accordion.Body>
-            <Button onClick={handleGetAllOrders}>Fetch Orders</Button>
+            <Button onClick={handleGetAllConsignments}>Fetch Consignments</Button>
           </Accordion.Body>
         </Accordion.Item>
 
         <Accordion.Item eventKey="1">
-          <Accordion.Header>Create An Order</Accordion.Header>
+          <Accordion.Header>Create An Consignment</Accordion.Header>
           <Accordion.Body>
             <Form>
               <Form.Group controlId="product">
                 <Form.Label>Product</Form.Label>
-                <Form.Control type="text" placeholder="Enter product" value={orderData.product} onChange={(e) => setOrderData({ ...orderData, product: e.target.value })} />
+                <Form.Control type="text" placeholder="Enter product" value={consignmentData.product} onChange={(e) => setConsignmentData({ ...consignmentData, product: e.target.value })} />
               </Form.Group>
               <Form.Group controlId="quantity">
                 <Form.Label>Quantity</Form.Label>
-                <Form.Control type="number" placeholder="Enter quantity" value={orderData.quantity} onChange={(e) => setOrderData({ ...orderData, quantity: e.target.value })} />
+                <Form.Control type="number" placeholder="Enter quantity" value={consignmentData.quantity} onChange={(e) => setConsignmentData({ ...consignmentData, quantity: e.target.value })} />
               </Form.Group>
               <Form.Group controlId="source">
                 <Form.Label>Source</Form.Label>
-                <Form.Control type="text" placeholder="Enter source" value={orderData.source} onChange={(e) => setOrderData({ ...orderData, source: e.target.value })} />
+                <Form.Control type="text" placeholder="Enter source" value={consignmentData.source} onChange={(e) => setConsignmentData({ ...consignmentData, source: e.target.value })} />
               </Form.Group>
               <Form.Group controlId="destination">
                 <Form.Label>Destination</Form.Label>
-                <Form.Control type="text" placeholder="Enter destination" value={orderData.destination} onChange={(e) => setOrderData({ ...orderData, destination: e.target.value })} />
+                <Form.Control type="text" placeholder="Enter destination" value={consignmentData.destination} onChange={(e) => setConsignmentData({ ...consignmentData, destination: e.target.value })} />
               </Form.Group>
               <Form.Group controlId="status">
                 <Form.Label>Status</Form.Label>
-                <Form.Control as="select" value={orderData.status} onChange={(e) => setOrderData({ ...orderData, status: e.target.value })}>
+                <Form.Control as="select" value={consignmentData.status} onChange={(e) => setConsignmentData({ ...consignmentData, status: e.target.value })}>
                   <option value="Processing">Processing</option>
                   <option value="Packaging">Packaging</option>
                   <option value="Dispatched">Dispatched</option>
@@ -148,38 +148,38 @@ const AccordionForm = () => {
                   <option value="Recalled">Recalled</option>
                 </Form.Control>
               </Form.Group>
-              <Button onClick={handleCreateOrder}>Create Order</Button>
+              <Button onClick={handleCreateConsignment}>Create Consignment</Button>
             </Form>
           </Accordion.Body>
         </Accordion.Item>
 
         <Accordion.Item eventKey="2">
-          <Accordion.Header>Update An Order</Accordion.Header>
+          <Accordion.Header>Update An Consignment</Accordion.Header>
           <Accordion.Body>
             <Form>
               <Form.Group controlId="id">
-                <Form.Label>Order ID</Form.Label>
-                <Form.Control type="text" placeholder="Enter order ID" value={id} onChange={(e) => setId(e.target.value)} />
+                <Form.Label>Consignment ID</Form.Label>
+                <Form.Control type="text" placeholder="Enter consignment ID" value={id} onChange={(e) => setId(e.target.value)} />
               </Form.Group>
               <Form.Group controlId="product">
                 <Form.Label>Product</Form.Label>
-                <Form.Control type="text" placeholder="Enter product" value={orderData.product} onChange={(e) => setOrderData({ ...orderData, product: e.target.value })} />
+                <Form.Control type="text" placeholder="Enter product" value={consignmentData.product} onChange={(e) => setConsignmentData({ ...consignmentData, product: e.target.value })} />
               </Form.Group>
               <Form.Group controlId="quantity">
                 <Form.Label>Quantity</Form.Label>
-                <Form.Control type="number" placeholder="Enter quantity" value={orderData.quantity} onChange={(e) => setOrderData({ ...orderData, quantity: e.target.value })} />
+                <Form.Control type="number" placeholder="Enter quantity" value={consignmentData.quantity} onChange={(e) => setConsignmentData({ ...consignmentData, quantity: e.target.value })} />
               </Form.Group>
               <Form.Group controlId="source">
                 <Form.Label>Source</Form.Label>
-                <Form.Control type="text" placeholder="Enter source" value={orderData.source} onChange={(e) => setOrderData({ ...orderData, source: e.target.value })} />
+                <Form.Control type="text" placeholder="Enter source" value={consignmentData.source} onChange={(e) => setConsignmentData({ ...consignmentData, source: e.target.value })} />
               </Form.Group>
               <Form.Group controlId="destination">
                 <Form.Label>Destination</Form.Label>
-                <Form.Control type="text" placeholder="Enter destination" value={orderData.destination} onChange={(e) => setOrderData({ ...orderData, destination: e.target.value })} />
+                <Form.Control type="text" placeholder="Enter destination" value={consignmentData.destination} onChange={(e) => setConsignmentData({ ...consignmentData, destination: e.target.value })} />
               </Form.Group>
               <Form.Group controlId="status">
                 <Form.Label>Status</Form.Label>
-                <Form.Control as="select" value={orderData.status} onChange={(e) => setOrderData({ ...orderData, status: e.target.value })}>
+                <Form.Control as="select" value={consignmentData.status} onChange={(e) => setConsignmentData({ ...consignmentData, status: e.target.value })}>
                   <option value="Processing">Processing</option>
                   <option value="Packaging">Packaging</option>
                   <option value="Dispatched">Dispatched</option>
@@ -188,31 +188,31 @@ const AccordionForm = () => {
                   <option value="Recalled">Recalled</option>
                 </Form.Control>
               </Form.Group>
-              <Button onClick={handleUpdateOrder}>Update Order</Button>
+              <Button onClick={handleUpdateConsignment}>Update Consignment</Button>
             </Form>
           </Accordion.Body>
         </Accordion.Item>
 
         <Accordion.Item eventKey="3">
-          <Accordion.Header>Delete An Order</Accordion.Header>
+          <Accordion.Header>Delete An Consignment</Accordion.Header>
           <Accordion.Body>
             <Form>
               <Form.Group controlId="id">
-                <Form.Label>Order ID</Form.Label>
-                <Form.Control type="text" placeholder="Enter order ID" value={id} onChange={(e) => setId(e.target.value)} />
+                <Form.Label>Consignment ID</Form.Label>
+                <Form.Control type="text" placeholder="Enter consignment ID" value={id} onChange={(e) => setId(e.target.value)} />
               </Form.Group>
-              <Button onClick={handleDeleteOrder}>Delete Order</Button>
+              <Button onClick={handleDeleteConsignment}>Delete Consignment</Button>
             </Form>
           </Accordion.Body>
         </Accordion.Item>
 
         <Accordion.Item eventKey="4">
-          <Accordion.Header>Add an Order Event</Accordion.Header>
+          <Accordion.Header>Add an Consignment Event</Accordion.Header>
           <Accordion.Body>
             <Form>
               <Form.Group controlId="id">
-                <Form.Label>Order ID</Form.Label>
-                <Form.Control type="text" placeholder="Enter order ID" value={id} onChange={(e) => setId(e.target.value)} />
+                <Form.Label>Consignment ID</Form.Label>
+                <Form.Control type="text" placeholder="Enter consignment ID" value={id} onChange={(e) => setId(e.target.value)} />
               </Form.Group>
               <Form.Group controlId="description">
                 <Form.Label>Description</Form.Label>
@@ -232,12 +232,12 @@ const AccordionForm = () => {
         </Accordion.Item>
 
         <Accordion.Item eventKey="5">
-          <Accordion.Header>Get All Order Events</Accordion.Header>
+          <Accordion.Header>Get All Consignment Events</Accordion.Header>
           <Accordion.Body>
             <Form>
               <Form.Group controlId="id">
-                <Form.Label>Order ID</Form.Label>
-                <Form.Control type="text" placeholder="Enter order ID" value={id} onChange={(e) => setId(e.target.value)} />
+                <Form.Label>Consignment ID</Form.Label>
+                <Form.Control type="text" placeholder="Enter consignment ID" value={id} onChange={(e) => setId(e.target.value)} />
               </Form.Group>
               <Button onClick={handleGetAllEvents}>Get All Events</Button>
             </Form>
