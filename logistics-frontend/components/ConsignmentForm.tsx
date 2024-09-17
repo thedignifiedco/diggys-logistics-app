@@ -23,9 +23,9 @@ const ConsignmentForm = () => {
 
   const handleGetRecentEvent = async () => {
     try {
-      const consignmentRes = await axios.get(`${baseURL}/consignments/${id}`);
+      const consignmentRes = await axios.get(`${baseURL}/api/consignments/${id}`);
       const consignmentStatus = consignmentRes.data.status;
-      const eventRes = await axios.get(`${baseURL}/consignments/${id}/events/recent`);
+      const eventRes = await axios.get(`${baseURL}/api/consignments/${id}/events/recent`);
       const event = eventRes.data;
       const formattedResponse = formatRecentEventResponse(id, consignmentStatus, event);
       setResponse(formattedResponse);

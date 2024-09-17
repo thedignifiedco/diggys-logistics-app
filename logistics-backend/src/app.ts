@@ -5,10 +5,15 @@ import cors from 'cors';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import consignmentRoutes from './routes/consignmentRoutes';
+import csurf from 'csurf';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
 const app = express();
+
+// Middleware for parsing cookies (required for CSRF token)
+app.use(cookieParser());
 
 // Determine CORS origin based on the environment
 const corsOrigin = process.env.NODE_ENV === 'production' ? process.env.PROD_CORS_ORIGIN : process.env.DEV_CORS_ORIGIN;
@@ -20,6 +25,15 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// CSRF protection middleware
+const csrfProtection = csurf({ cookie: true }); // CSRF token will be stored in a cookie
+
+// CSRF Token Route
+app.get('/csrf-token', csrfProtection, (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
+});
+
+// Swagger configuration
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -34,12 +48,13 @@ const options = {
       }
     ]
   },
-  apis: ['./src/routes/*.ts']
+  apis: ['./src/routes/*.ts', './src/schemas/consignmentSchema.ts']
 };
 
 const specs = swaggerJsdoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
+// Consignment routes
 app.use('/api', consignmentRoutes);
 
 const PORT = process.env.PORT || 8080;

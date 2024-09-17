@@ -1,15 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Accordion, Button, Form, Alert, Container } from 'react-bootstrap';
 import axios from 'axios';
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
 const AccordionForm = () => {
+  const [csrfToken, setCsrfToken] = useState<string | null>(null);
   const [response, setResponse] = useState('');
   const [error, setError] = useState('');
   const [id, setId] = useState('');
   const [consignmentData, setConsignmentData] = useState({ product: '', quantity: '', source: '', destination: '', status: 'Processing' });
   const [eventData, setEventData] = useState({ description: '', location: '', custodian: '' });
+
+  // Fetch CSRF token when component mounts
+  useEffect(() => {
+    const fetchCsrfToken = async () => {
+      try {
+        const res = await axios.get(`${baseURL}/csrf-token`, { withCredentials: true });
+        setCsrfToken(res.data.csrfToken);
+      } catch (err) {
+        setError('Failed to fetch CSRF token');
+      }
+    };
+    fetchCsrfToken();
+  }, []);
 
   const handleResponse = (message: string, data: any, error: string) => {
     if (error) {
@@ -48,7 +62,7 @@ const AccordionForm = () => {
 
   const handleGetAllConsignments = async () => {
     try {
-      const res = await axios.get(`${baseURL}/consignments`);
+      const res = await axios.get(`${baseURL}/api/consignments`);
       const formattedResponse = res.data.map((consignment: any) => `<p><strong>Consignment ID:</strong> ${consignment._id}<br/><strong>Status:</strong> ${consignment.status}</p>`).join('<br/>');
       setResponse(formattedResponse);
       setError('');
@@ -60,7 +74,12 @@ const AccordionForm = () => {
 
   const handleCreateConsignment = async () => {
     try {
-      const res = await axios.post(`${baseURL}/consignments`, consignmentData);
+      const res = await axios.post(`${baseURL}/api/consignments`, consignmentData, {
+        headers: {
+          'csrf-token': csrfToken!,
+        },
+        withCredentials: true
+      });
       handleResponse('Consignment created successfully', res.data, '');
     } catch (err) {
       handleResponse('', null, 'Failed to create consignment');
@@ -69,10 +88,14 @@ const AccordionForm = () => {
 
   const handleUpdateConsignment = async () => {
     try {
-      // Filter out empty fields
       const filteredData = Object.fromEntries(Object.entries(consignmentData).filter(([key, value]) => value !== ''));
 
-      const res = await axios.put(`${baseURL}/consignments/${id}`, filteredData);
+      const res = await axios.put(`${baseURL}/api/consignments/${id}`, filteredData, {
+        headers: {
+          'csrf-token': csrfToken!,
+        },
+        withCredentials: true
+      });
       handleResponse('Consignment updated successfully', res.data, '');
     } catch (err) {
       handleResponse('', null, 'Failed to update consignment');
@@ -81,7 +104,12 @@ const AccordionForm = () => {
 
   const handleDeleteConsignment = async () => {
     try {
-      const res = await axios.delete(`${baseURL}/consignments/${id}`);
+      const res = await axios.delete(`${baseURL}/api/consignments/${id}`, {
+        headers: {
+          'csrf-token': csrfToken!,
+        },
+        withCredentials: true
+      });
       handleResponse('Consignment deleted successfully', { _id: id }, '');
     } catch (err) {
       handleResponse('', null, 'Failed to delete consignment');
@@ -90,7 +118,12 @@ const AccordionForm = () => {
 
   const handleAddEvent = async () => {
     try {
-      const res = await axios.post(`${baseURL}/consignments/${id}/events`, eventData);
+      const res = await axios.post(`${baseURL}/api/consignments/${id}/events`, eventData, {
+        headers: {
+          'csrf-token': csrfToken!,
+        },
+        withCredentials: true
+      });
       handleResponse('Event added successfully', res.data, '');
     } catch (err) {
       handleResponse('', null, 'Failed to add event');
@@ -99,8 +132,8 @@ const AccordionForm = () => {
 
   const handleGetAllEvents = async () => {
     try {
-      const consignmentRes = await axios.get(`${baseURL}/consignments/${id}`);
-      const eventsRes = await axios.get(`${baseURL}/consignments/${id}/events`);
+      const consignmentRes = await axios.get(`${baseURL}/api/consignments/${id}`);
+      const eventsRes = await axios.get(`${baseURL}/api/consignments/${id}/events`);
       handleResponse('Consignment events retrieved successfully', { ...consignmentRes.data, events: eventsRes.data }, '');
     } catch (err) {
       handleResponse('', null, 'Failed to fetch all events');
@@ -118,7 +151,7 @@ const AccordionForm = () => {
         </Accordion.Item>
 
         <Accordion.Item eventKey="1">
-          <Accordion.Header>Create An Consignment</Accordion.Header>
+          <Accordion.Header>Create A Consignment</Accordion.Header>
           <Accordion.Body>
             <Form>
               <Form.Group controlId="product">
@@ -154,7 +187,7 @@ const AccordionForm = () => {
         </Accordion.Item>
 
         <Accordion.Item eventKey="2">
-          <Accordion.Header>Update An Consignment</Accordion.Header>
+          <Accordion.Header>Update A Consignment</Accordion.Header>
           <Accordion.Body>
             <Form>
               <Form.Group controlId="id">
@@ -194,7 +227,7 @@ const AccordionForm = () => {
         </Accordion.Item>
 
         <Accordion.Item eventKey="3">
-          <Accordion.Header>Delete An Consignment</Accordion.Header>
+          <Accordion.Header>Delete A Consignment</Accordion.Header>
           <Accordion.Body>
             <Form>
               <Form.Group controlId="id">
@@ -207,7 +240,7 @@ const AccordionForm = () => {
         </Accordion.Item>
 
         <Accordion.Item eventKey="4">
-          <Accordion.Header>Add an Consignment Event</Accordion.Header>
+          <Accordion.Header>Add A Consignment Event</Accordion.Header>
           <Accordion.Body>
             <Form>
               <Form.Group controlId="id">
