@@ -51,6 +51,7 @@ const ProfilePage = () => {
                   width="200"
                   height="200"
                   alt={user.name}
+                  className='profile-picture'
                 />
               </Col>
               <Col sm={8}>

@@ -15,18 +15,18 @@ a.nav-link {
     background: #fdfdfd;
     padding: 20px;
     border-radius: 20px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
 }
 
 .content {
-    margin-top: 5rem!important;
-    margin-bottom: 5rem!important;
+    margin-top: 5rem !important;
+    margin-bottom: 5rem !important;
 }
 
 @media (max-width: 700px) {
     .content {
-        margin-top: 3rem!important;
-        margin-bottom: 3rem!important;
+        margin-top: 3rem !important;
+        margin-bottom: 3rem !important;
     }
 }
 
@@ -95,4 +95,9 @@ pre {
     padding: 15px;
     border-radius: 5px;
     max-height: 400px;
+}
+
+.profile-picture {
+    margin: 0 auto;
+    display: block;
 }
