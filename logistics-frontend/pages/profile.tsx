@@ -1,11 +1,11 @@
-import { GetServerSideProps } from 'next';
-import { getSession } from '@frontegg/nextjs/pages';
-import { useAuth } from '@frontegg/nextjs';
-import { Container, Card, Image, Row, Col } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
-import NavBar from '@/components/NavBar';
-import { AdminPortalButton } from '@/components/AdminPortal';
-import Link from 'next/link';
+import { GetServerSideProps } from "next";
+import { getSession } from "@frontegg/nextjs/pages";
+import { useAuth } from "@frontegg/nextjs";
+import { Container, Card, Image, Row, Col } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import NavBar from "@/components/NavBar";
+import { AdminPortalButton } from "@/components/AdminPortal";
+import Link from "next/link";
 import { jwtDecode } from "jwt-decode";
 
 const ProfilePage = () => {
@@ -13,24 +13,24 @@ const ProfilePage = () => {
   const [decodedToken, setDecodedToken] = useState<any>(null);
   const [metadata, setMetadata] = useState<Record<string, any>>({});
 
-    // Decode the access token
-    useEffect(() => {
-      if (user?.accessToken) {
-        const decoded = jwtDecode(user.accessToken);
-        setDecodedToken(decoded);
-      }
-    }, [user]);
+  // Decode the access token
+  useEffect(() => {
+    if (user?.accessToken) {
+      const decoded = jwtDecode(user.accessToken);
+      setDecodedToken(decoded);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (user?.metadata) {
       try {
         const parsed =
-          typeof user.metadata === 'string'
+          typeof user.metadata === "string"
             ? JSON.parse(user.metadata)
             : user.metadata;
         setMetadata(parsed);
       } catch (e) {
-        console.error('Failed to parse user metadata:', e);
+        console.error("Failed to parse user metadata:", e);
       }
     }
   }, [user]);
@@ -46,34 +46,50 @@ const ProfilePage = () => {
             <Row>
               <Col sm={4}>
                 <Image
-                  src={user.profilePictureUrl ?? '/next.svg'}
+                  src={user.profilePictureUrl ?? "/next.svg"}
                   roundedCircle
                   width="200"
                   height="200"
                   alt={user.name}
-                  className='profile-picture'
+                  className="profile-picture"
                 />
+                <AdminPortalButton />
               </Col>
               <Col sm={8}>
                 <h2>{user.name}</h2>
-                <p><b>Email:</b> {user.email}</p>
-                <p><b>Email Verified:</b> {JSON.stringify(user.verified)}</p>
-                <p><b>User ID:</b> {user.sub}</p>
-                <p><b>Org ID:</b> {user.tenantId}</p>
-                <p><b>Team:</b> {metadata.teamId ?? 'N/A'}</p>
-                <p><b>Parent Company:</b> {(user as any).customClaims?.Company ?? 'N/A'} <br />
-                  (Response from{' '}
-                  <Link href="https://fake-json-api.mock.beeceptor.com/companies" target="_blank">
+                <p>
+                  <b>Email:</b> {user.email}
+                </p>
+                <p>
+                  <b>Email Verified:</b> {JSON.stringify(user.verified)}
+                </p>
+                <p>
+                  <b>User ID:</b> {user.sub}
+                </p>
+                <p>
+                  <b>Org ID:</b> {user.tenantId}
+                </p>
+                <p>
+                  <b>Team:</b> {metadata.teamId ?? "N/A"}
+                </p>
+                <p>
+                  <b>Parent Company:</b>{" "}
+                  {(user as any).customClaims?.Company ?? "N/A"} <br />
+                  (Response from{" "}
+                  <Link
+                    href="https://fake-json-api.mock.beeceptor.com/companies"
+                    target="_blank"
+                  >
                     3rd-party API
-                  </Link>)
+                  </Link>
+                  )
                 </p>
                 <h3>Decoded Access Token</h3>
-              <pre>
-                {decodedToken
-                  ? JSON.stringify(decodedToken, null, 2)
-                  : "No token available"}
-              </pre>
-                <AdminPortalButton />
+                <pre>
+                  {decodedToken
+                    ? JSON.stringify(decodedToken, null, 2)
+                    : "No token available"}
+                </pre>
               </Col>
             </Row>
           </Card.Body>
@@ -91,7 +107,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!session) {
     return {
       redirect: {
-        destination: '/login',
+        destination: "/login",
         permanent: false,
       },
     };
