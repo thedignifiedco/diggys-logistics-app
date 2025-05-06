@@ -4,6 +4,6 @@ import { Button } from 'react-bootstrap';
 
 export const AdminPortalButton = () => {
   return (
-    <Button variant="primary" className="mt-3" onClick={() => AdminPortal.show()}>Admin Portal</Button>
+    <Button variant="primary" className="adminPortal-btn mt-3" onClick={() => AdminPortal.show()}>Admin Portal</Button>
   );
 };

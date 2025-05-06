@@ -11,6 +11,11 @@ a.nav-link {
     color: #fff;
 }
 
+a.nav-link:focus,
+a.nav-link:hover {
+    color: #cccccc;
+}
+
 .main {
     background: #fdfdfd;
     padding: 20px;
@@ -97,7 +102,8 @@ pre {
     max-height: 400px;
 }
 
-.profile-picture {
+.profile-picture,
+.adminPortal-btn {
     margin: 0 auto;
     display: block;
 }
