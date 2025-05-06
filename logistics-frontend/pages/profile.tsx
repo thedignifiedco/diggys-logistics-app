@@ -6,10 +6,20 @@ import { useEffect, useState } from 'react';
 import NavBar from '@/components/NavBar';
 import { AdminPortalButton } from '@/components/AdminPortal';
 import Link from 'next/link';
+import { jwtDecode } from "jwt-decode";
 
 const ProfilePage = () => {
   const { user } = useAuth();
+  const [decodedToken, setDecodedToken] = useState<any>(null);
   const [metadata, setMetadata] = useState<Record<string, any>>({});
+
+    // Decode the access token
+    useEffect(() => {
+      if (user?.accessToken) {
+        const decoded = jwtDecode(user.accessToken);
+        setDecodedToken(decoded);
+      }
+    }, [user]);
 
   useEffect(() => {
     if (user?.metadata) {
@@ -49,14 +59,19 @@ const ProfilePage = () => {
                 <p><b>Email Verified:</b> {JSON.stringify(user.verified)}</p>
                 <p><b>User ID:</b> {user.sub}</p>
                 <p><b>Org ID:</b> {user.tenantId}</p>
-                <p><b>Team ID:</b> {metadata.teamId ?? 'N/A'}</p>
-                <p>
-                  <b>Parent Company:</b> {metadata.Company ?? 'N/A'} <br />
+                <p><b>Team:</b> {metadata.teamId ?? 'N/A'}</p>
+                <p><b>Parent Company:</b> {(user as any).customClaims?.Company ?? 'N/A'} <br />
                   (Response from{' '}
                   <Link href="https://fake-json-api.mock.beeceptor.com/companies" target="_blank">
                     3rd-party API
                   </Link>)
                 </p>
+                <h3>Decoded Access Token</h3>
+              <pre>
+                {decodedToken
+                  ? JSON.stringify(decodedToken, null, 2)
+                  : "No token available"}
+              </pre>
                 <AdminPortalButton />
               </Col>
             </Row>

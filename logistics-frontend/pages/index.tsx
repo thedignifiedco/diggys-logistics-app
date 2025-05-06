@@ -23,7 +23,7 @@ const Home = () => {
                       <ConsingmentForm />
                   ) : (
                     <div className="alert alert-warning">
-                      <p>You must be logged in to use the consignment tools.</p>
+                      <p>You must be logged in to use the consignment tracker.</p>
                       <Link href="/account/login">
                         <Button variant="primary">Login / Signup</Button>
                       </Link>
