@@ -7,70 +7,92 @@ import swaggerUi from 'swagger-ui-express';
 import consignmentRoutes from './routes/consignmentRoutes';
 import csurf from 'csurf';
 import cookieParser from 'cookie-parser';
+import { FronteggContext, withAuthentication } from '@frontegg/client';
 
 dotenv.config();
 
 const app = express();
 
+// Initialize FronteggContext
+FronteggContext.init({
+  FRONTEGG_CLIENT_ID: process.env.FRONTEGG_CLIENT_ID!,
+  FRONTEGG_API_KEY: process.env.FRONTEGG_API_KEY!,
+});
+
 // Middleware for parsing cookies (required for CSRF token)
 app.use(cookieParser());
 
-// Determine CORS origin based on the environment
-const corsOrigin = process.env.NODE_ENV === 'production' ? process.env.PROD_CORS_ORIGIN : process.env.DEV_CORS_ORIGIN;
+// Determine CORS origin based on environment
+const corsOrigin =
+  process.env.NODE_ENV === 'production'
+    ? process.env.PROD_CORS_ORIGIN
+    : process.env.DEV_CORS_ORIGIN;
 
 app.use(cors({
   origin: corsOrigin,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true
+  credentials: true,
 }));
+
 app.use(express.json());
 
 // CSRF protection middleware
-const csrfProtection = csurf({ cookie: true }); // CSRF token will be stored in a cookie
+const csrfProtection = csurf({ cookie: true });
 
-// CSRF Token Route
 app.get('/csrf-token', csrfProtection, (req, res) => {
   res.json({ csrfToken: req.csrfToken() });
 });
 
-// Swagger configuration
-const options = {
+// Swagger documentation setup
+const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
       title: 'Diggys Logistics API',
       version: '1.0.0',
-      description: 'REST API for Diggys Logistics'
+      description: 'REST API for Diggys Logistics',
     },
     servers: [
       {
-        url: 'http://localhost:8080'
-      }
-    ]
+        url: 'http://localhost:8080',
+      },
+    ],
   },
-  apis: ['./src/routes/*.ts', './src/schemas/consignmentSchema.ts']
+  apis: ['./src/routes/*.ts', './src/schemas/consignmentSchema.ts'],
 };
 
-const specs = swaggerJsdoc(options);
+const specs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-// Consignment routes
-app.use('/api', consignmentRoutes);
+// Secure API routes with Frontegg authentication
+app.use('/api',
+  withAuthentication(), // authenticate first
+  (req, res, next) => { // then inject user info
+    if (req.frontegg?.user) {
+      req.user = req.frontegg.user;
+      req.userId = req.frontegg.user.sub;
+      req.userTeamId = req.frontegg.user.metadata?.teamId ?? undefined;
+      req.userOrgId = req.frontegg.user.tenantId;
+    }
+    next();
+  },
+  consignmentRoutes // then route to controller
+);
 
 const PORT = process.env.PORT || 8080;
 
 const connectToDatabase = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI as string);
-    console.log('Connected to MongoDB');
+    console.log('✅ Connected to MongoDB');
   } catch (error) {
-    console.error('Error connecting to MongoDB', error);
+    console.error('❌ MongoDB connection error:', error);
     process.exit(1);
   }
 };
 
 connectToDatabase().then(() => {
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 });
 
-module.exports = app;
+export default app;

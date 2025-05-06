@@ -14,6 +14,9 @@ interface IConsignment extends Document {
   destination: string;
   status: 'Processing' | 'Packaging' | 'Dispatched' | 'Delivered' | 'Cancelled' | 'Recalled';
   events: IEvent[];
+  ownerId: string;
+  teamId: string;
+  orgId: string;
 }
 
 const EventSchema: Schema = new Schema({
@@ -28,8 +31,15 @@ const ConsignmentSchema: Schema = new Schema({
   quantity: { type: Number, required: true },
   source: { type: String, required: true },
   destination: { type: String, required: true },
-  status: { type: String, enum: ['Processing', 'Packaging', 'Dispatched', 'Delivered', 'Cancelled', 'Recalled'], required: true },
-  events: { type: [EventSchema], default: [] }
+  status: {
+    type: String,
+    enum: ['Processing', 'Packaging', 'Dispatched', 'Delivered', 'Cancelled', 'Recalled'],
+    required: true
+  },
+  events: { type: [EventSchema], default: [] },
+  ownerId: { type: String, required: true },
+  teamId: { type: String, required: true },
+  orgId: { type: String, required: true }
 });
 
 const Consignment = mongoose.model<IConsignment>('Consignment', ConsignmentSchema);

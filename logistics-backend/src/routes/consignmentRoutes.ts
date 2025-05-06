@@ -121,11 +121,11 @@ router.get('/consignments/:id/events', getConsignmentEventsController);
  * @swagger
  * /api/consignments:
  *   get:
- *     summary: Get all consignments
+ *     summary: Get all consignments available to the user based on role and ownership
  *     tags: [Consignments]
  *     responses:
  *       200:
- *         description: A list of consignments.
+ *         description: A list of accessible consignments.
  *         content:
  *           application/json:
  *             schema:
@@ -151,6 +151,8 @@ router.get('/consignments', getAllConsignmentsController);
  *     responses:
  *       200:
  *         description: Consignment deleted successfully.
+ *       403:
+ *         description: Forbidden - user does not have access to this consignment.
  */
 router.delete('/consignments/:id', deleteConsignmentController);
 
@@ -174,6 +176,8 @@ router.delete('/consignments/:id', deleteConsignmentController);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Consignment'
+ *       403:
+ *         description: Forbidden - user does not have access to this consignment.
  */
 router.get('/consignments/:id', getConsignmentByIdController);
 
@@ -197,6 +201,8 @@ router.get('/consignments/:id', getConsignmentByIdController);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Event'
+ *       403:
+ *         description: Forbidden - user does not have access to this consignment.
  */
 router.get('/consignments/:id/events/recent', getMostRecentEventController);
 

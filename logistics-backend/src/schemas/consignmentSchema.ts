@@ -5,16 +5,18 @@
  *     Consignment:
  *       type: object
  *       required:
- *         - consignmentId
  *         - product
  *         - quantity
  *         - source
  *         - destination
  *         - status
+ *         - ownerId
+ *         - teamId
+ *         - orgId
  *       properties:
  *         consignmentId:
  *           type: string
- *           description: Unique identifier for the consignment.
+ *           description: Optional unique identifier for the consignment.
  *         product:
  *           type: string
  *           description: Name of the product being shipped.
@@ -36,6 +38,15 @@
  *           description: A list of events associated with the consignment.
  *           items:
  *             $ref: '#/components/schemas/Event'
+ *         ownerId:
+ *           type: string
+ *           description: The ID of the user who created the consignment.
+ *         teamId:
+ *           type: string
+ *           description: The team ID associated with the consignment.
+ *         orgId:
+ *           type: string
+ *           description: The organization ID associated with the consignment.
  *
  *     Event:
  *       type: object
