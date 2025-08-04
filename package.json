@@ -1,0 +1,18 @@
+{
+  "name": "diggys-logistics-app",
+  "version": "1.0.0",
+  "description": "Diggys Logistics - Supply Chain Tracking System",
+  "private": true,
+  "workspaces": [
+    "logistics-backend",
+    "logistics-frontend"
+  ],
+  "scripts": {
+    "build": "cd logistics-backend && npm run build",
+    "start": "cd logistics-backend && npm start",
+    "dev": "cd logistics-backend && npm run dev"
+  },
+  "keywords": ["logistics", "supply-chain", "tracking"],
+  "author": "Diggys Labs",
+  "license": "ISC"
+} 

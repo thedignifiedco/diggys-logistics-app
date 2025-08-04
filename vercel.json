@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "buildCommand": "cd logistics-backend && npm run build",
+  "outputDirectory": "logistics-backend/dist",
+  "builds": [
+    {
+      "src": "logistics-backend/src/server.ts",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["logistics-backend/src/**/*"]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "logistics-backend/src/server.ts"
+    }
+  ],
+  "functions": {
+    "logistics-backend/src/server.ts": {
+      "maxDuration": 30
+    }
+  }
+} 

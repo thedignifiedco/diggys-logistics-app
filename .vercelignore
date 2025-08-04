@@ -1,0 +1,19 @@
+# Exclude everything except the backend
+*
+
+# Include only the backend directory
+!logistics-backend/
+
+# Exclude unnecessary files from backend
+logistics-backend/node_modules
+logistics-backend/.env*
+logistics-backend/.git
+logistics-backend/README.md
+logistics-backend/*.log
+logistics-backend/npm-debug.log*
+logistics-backend/yarn-debug.log*
+logistics-backend/yarn-error.log*
+logistics-backend/.DS_Store
+
+# Exclude frontend completely
+logistics-frontend/ 
