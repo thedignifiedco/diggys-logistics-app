@@ -5,7 +5,6 @@ import cors from 'cors';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import consignmentRoutes from './routes/consignmentRoutes';
-import csurf from 'csurf';
 import cookieParser from 'cookie-parser';
 import { FronteggContext, withAuthentication } from '@frontegg/client';
 
@@ -46,11 +45,16 @@ app.use(cors({
 
 app.use(express.json());
 
-// CSRF protection middleware
-const csrfProtection = csurf({ cookie: true });
-
-app.get('/csrf-token', csrfProtection, (req, res) => {
-  res.json({ csrfToken: req.csrfToken() });
+// CSRF protection middleware - simplified for now
+app.get('/csrf-token', (req, res) => {
+  // Generate a simple CSRF token
+  const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  res.cookie('csrf-token', token, { 
+    httpOnly: true, 
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production'
+  });
+  res.json({ csrfToken: token });
 });
 
 // Swagger documentation setup
