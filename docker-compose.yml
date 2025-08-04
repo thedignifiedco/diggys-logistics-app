@@ -3,9 +3,11 @@ services:
     build: ./logistics-backend
     ports:
       - "8080:8080"
+    env_file:
+      - ./logistics-backend/.env.local
     environment:
       - PORT=8080
-      - DB_URL=mongodb+srv://damolasorinolu:wXU2SM0jHmrpXOpE@dignifiedlabs.wbhkx33.mongodb.net
+      - DEV_CORS_ORIGIN=http://localhost:3000
     depends_on:
       - mongo
 
@@ -13,8 +15,10 @@ services:
     build: ./logistics-frontend
     ports:
       - "3000:3000"
+    env_file:
+      - ./logistics-frontend/.env.local
     environment:
-      - NEXT_PUBLIC_API_URL=http:/localhost/api:5000
+      - NEXT_PUBLIC_API_URL=http://localhost:8080
     depends_on:
       - backend
 

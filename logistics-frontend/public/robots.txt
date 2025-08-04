@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://logistics.dignifiedlabs.com/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /account/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/ 

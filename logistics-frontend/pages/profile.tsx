@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { GetServerSideProps } from "next";
 import { getSession } from "@frontegg/nextjs/pages";
 import { useAuth } from "@frontegg/nextjs";
@@ -39,6 +40,20 @@ const ProfilePage = () => {
 
   return (
     <div>
+      <Head>
+        <title>Profile - Diggys Logistics</title>
+        <meta name="description" content="View and manage your user profile, organization details, and access token information in the Diggys Logistics platform." />
+        <meta name="keywords" content="profile, user account, organization, authentication" />
+        <meta name="author" content="Diggys Labs" />
+        <meta property="og:title" content="Profile - Diggys Logistics" />
+        <meta property="og:description" content="View and manage your user profile and organization details." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://logistics.dignifiedlabs.com/profile" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Profile - Diggys Logistics" />
+        <meta name="twitter:description" content="View and manage your user profile and organization details." />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <NavBar />
       <Container className="content mt-4">
         <Card>

@@ -9,7 +9,17 @@ import csurf from 'csurf';
 import cookieParser from 'cookie-parser';
 import { FronteggContext, withAuthentication } from '@frontegg/client';
 
-dotenv.config();
+// Load environment variables based on environment
+// Check if we're in development mode (either NODE_ENV is 'development' or not set in dev environment)
+const isDevelopment = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === undefined;
+
+if (isDevelopment) {
+  // In development, load .env.local first, then .env as fallback
+  dotenv.config({ path: '.env.local' });
+} else {
+  // In production, load .env file
+  dotenv.config();
+}
 
 const app = express();
 

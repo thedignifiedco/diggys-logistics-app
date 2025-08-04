@@ -18,6 +18,16 @@ This repository is a supply chain tracking system, consisting of a backend API b
 - **Frontend**: Next.js, React, Bootstrap
 - **Deployment**: Vercel for the frontend, Docker for containerization
 
+## Environment Configuration
+
+The project uses the following environment file structure:
+
+- **`.env`**: Contains example configurations and default values
+- **`.env.local`**: Contains your actual credentials for local development (not committed to git)
+- **Docker**: Uses `.env.local` files for containerized deployment
+
+**Important**: Never commit your `.env.local` files to version control as they contain sensitive credentials.
+
 ## Setup Instructions
 
 ### API Setup
@@ -35,11 +45,23 @@ This repository is a supply chain tracking system, consisting of a backend API b
     npm install
     ```
 
-3. **Create a `.env` file in the `logistics-api` directory and add the following environment variables:**
+3. **Environment Configuration:**
 
+    The project includes `.env` files with example configurations. For local development, create a `.env.local` file:
+
+    ```bash
+    # Copy the environment file for local development
+    cp .env .env.local
+    ```
+    
+    Then edit the `.env.local` file and replace the placeholder values with your actual credentials:
+    
     ```env
     PORT=8080
-    DB_URL=mongodb://localhost:27017/logistics-api
+    MONGODB_URI=mongodb+srv://damolasorinolu:wXU2SM0jHmrpXOpE@dignifiedlabs.wbhkx33.mongodb.net
+    FRONTEGG_CLIENT_ID=your_frontegg_client_id_here
+    FRONTEGG_API_KEY=your_frontegg_api_key_here
+    DEV_CORS_ORIGIN=http://localhost:3000
     ```
 
 4. **Run the API server:**
@@ -64,10 +86,21 @@ This repository is a supply chain tracking system, consisting of a backend API b
     npm install
     ```
 
-3. **Create a `.env.local` file in the `logistics-frontend` directory and add the following environment variable:**
+3. **Environment Configuration:**
 
+    The project includes `.env` files with example configurations. For local development, create a `.env.local` file:
+
+    ```bash
+    # Copy the environment file for local development
+    cp .env .env.local
+    ```
+    
+    Then edit the `.env.local` file and replace the placeholder values with your actual credentials:
+    
     ```env
-    NEXT_PUBLIC_API_URL=http://localhost:3000
+    NEXT_PUBLIC_API_URL=http://localhost:8080
+    FRONTEGG_CLIENT_ID=your_frontegg_client_id_here
+    FRONTEGG_APP_ID=your_frontegg_app_id_here
     ```
 
 4. **Run the frontend application:**
@@ -77,6 +110,24 @@ This repository is a supply chain tracking system, consisting of a backend API b
     ```
 
     The frontend application should now be running at `http://localhost:3000`.
+
+## Troubleshooting
+
+### Frontegg Authentication Issues
+
+If you're experiencing authentication failures between the frontend and backend:
+
+1. **Check Environment Variables**: Ensure you have set the correct Frontegg credentials in your `.env.local` files:
+   - Backend (`.env.local`): `FRONTEGG_CLIENT_ID` and `FRONTEGG_API_KEY`
+   - Frontend (`.env.local`): `FRONTEGG_CLIENT_ID` and `FRONTEGG_APP_ID`
+
+2. **Verify Frontegg Configuration**: Make sure your Frontegg application is properly configured:
+   - Check that your application's allowed origins include `http://localhost:3000`
+   - Verify that your API key has the necessary permissions
+
+3. **Check CORS Configuration**: Ensure the backend CORS settings allow requests from your frontend domain
+
+4. **Version Compatibility**: The backend uses `@frontegg/client` v9.2.2 and frontend uses `@frontegg/nextjs` v9.2.2. Make sure these versions are compatible.
 
 ## Deployment Instructions
 
