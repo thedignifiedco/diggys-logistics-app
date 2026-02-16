@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@frontegg/nextjs": "^9.2.2",
-    "axios": "^1.9.0",
+    "axios": "^1.13.5",
     "bootstrap": "^5.3.3",
     "jwt-decode": "^4.0.0",
     "next": "^14.2.28",
